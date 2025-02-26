@@ -2,6 +2,27 @@ import os
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 from openai import OpenAI
+import openai
+
+# Set up OpenAI client with the API key
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Example function to generate a response using GPT-4o
+def get_openai_response(prompt):
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=150,
+        temperature=0.7,
+    )
+    return response['choices'][0]['message']['content']
+
+# Test the function
+print(get_openai_response("How do I set up a new source in Segment?"))
+
 
 # Load environment variables from .env file
 load_dotenv()
